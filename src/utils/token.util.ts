@@ -10,6 +10,15 @@ const generateAccessToken = (
   return jwt.sign(payload, secret, options)
 }
 
+const generateRefreshToken = (
+  userId: { id: number; email: string },
+  options?: jwt.SignOptions
+) => {
+  const payload = { id: userId }
+  const secret = ENV.REFRESH_TOKEN_SECRET
+  return jwt.sign(payload, secret, options)
+}
+
 const verifyToken = (token: string, secret: string): string | JwtPayload => {
   try {
     return jwt.verify(token, secret)
@@ -18,4 +27,4 @@ const verifyToken = (token: string, secret: string): string | JwtPayload => {
   }
 }
 
-export { generateAccessToken, verifyToken }
+export { generateAccessToken, generateRefreshToken, verifyToken }

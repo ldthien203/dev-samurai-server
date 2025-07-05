@@ -4,6 +4,7 @@ import { TEnv } from '@/types/type'
 dotenv.config()
 
 const ENV: TEnv = {
+  NODE_ENV: process.env.NODE_ENV || '',
   PORT: Number(process.env.PORT) || 4000,
   DATABASE_USER: process.env.DATABASE_USER || '',
   DATABASE_HOST: process.env.DATABASE_HOST || '',
@@ -11,6 +12,7 @@ const ENV: TEnv = {
   DATABASE_PASSWORD: process.env.DATABASE_PASSWORD || '',
   DATABASE_PORT: Number(process.env.DATABASE_PORT) || 5432,
   ACCESS_TOKEN_SECRET: process.env.ACCESS_TOKEN_SECRET || '',
+  REFRESH_TOKEN_SECRET: process.env.REFRESH_TOKEN_SECRET || '',
 }
 
 export default ENV

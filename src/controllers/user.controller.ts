@@ -3,7 +3,8 @@ import { AppDataSource } from '../data-source'
 import { User } from '../entity/User'
 import { hashPassword, verifyPassword } from '../utils/hashPassword.util'
 import { successResponse, errorResponse } from '../utils/ApiResponse.util'
-import { generateAccessToken } from '../utils/token.util'
+import { generateAccessToken, generateRefreshToken } from '../utils/token.util'
+import ENV from '../config/env.config'
 
 const registerUser = async (req: TRequest, res: TResponse) => {
   const { name, email, password } = req.body
@@ -80,8 +81,20 @@ const loginUser = async (req: TRequest, res: TResponse) => {
 
     const payload = { id: user.id, email: user.email }
     const accessToken = generateAccessToken(payload, { expiresIn: '15m' })
+    const refreshToken = generateRefreshToken(payload, { expiresIn: '7d' })
 
-    return successResponse(res, accessToken, 'Login successful')
+    res.cookie('refreshToken', refreshToken, {
+      httpOnly: true,
+      secure: ENV.NODE_ENV === 'production',
+      sameSite: 'strict',
+      maxAge: 7 * 24 * 60 * 60 * 1000,
+    })
+
+    return successResponse(
+      res,
+      { accessToken, refreshToken },
+      'Login successful'
+    )
   } catch (error) {
     return errorResponse(res, error, 'Login failed')
   }
