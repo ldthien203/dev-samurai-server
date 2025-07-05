@@ -1,4 +1,4 @@
-import jwt from 'jsonwebtoken'
+import jwt, { JwtPayload } from 'jsonwebtoken'
 import ENV from '../config/env.config'
 
 const generateAccessToken = (
@@ -10,7 +10,7 @@ const generateAccessToken = (
   return jwt.sign(payload, secret, options)
 }
 
-const verifyToken = (token: string, secret: string) => {
+const verifyToken = (token: string, secret: string): string | JwtPayload => {
   try {
     return jwt.verify(token, secret)
   } catch (error) {

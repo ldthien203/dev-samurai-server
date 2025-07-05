@@ -1,11 +1,11 @@
-import { Request, Response } from 'express'
+import { TRequest, TResponse } from '@/types/type'
 import { AppDataSource } from '../data-source'
 import { User } from '../entity/User'
 import { hashPassword, verifyPassword } from '../utils/hashPassword.util'
 import { successResponse, errorResponse } from '../utils/ApiResponse.util'
 import { generateAccessToken } from '../utils/token.util'
 
-const registerUser = async (req: Request, res: Response) => {
+const registerUser = async (req: TRequest, res: TResponse) => {
   const { name, email, password } = req.body
 
   if (!name || !email || !password) {
@@ -51,7 +51,7 @@ const registerUser = async (req: Request, res: Response) => {
   }
 }
 
-const loginUser = async (req: Request, res: Response) => {
+const loginUser = async (req: TRequest, res: TResponse) => {
   const { email, password } = req.body
 
   try {
