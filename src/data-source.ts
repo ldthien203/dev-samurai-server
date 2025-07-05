@@ -1,4 +1,3 @@
-import 'reflect-metadata'
 import { DataSource } from 'typeorm'
 import { User } from './entity/User'
 import ENV from './config/env.config'
@@ -19,19 +18,22 @@ export const AppDataSource = new DataSource({
 
 AppDataSource.initialize()
   .then(async () => {
-    console.log('Inserting a new user into the database...')
-    const user = new User()
-    user.name = 'Timber'
+    const existingUser = await AppDataSource.manager.findOneBy(User, {
+      email: 'timber@example.com',
+    })
 
-    await AppDataSource.manager.save(user)
-    console.log('Saved a new user with id: ' + user.id)
-
-    console.log('Loading users from the database...')
-    const users = await AppDataSource.manager.find(User)
-    console.log('Loaded users: ', users)
-
-    console.log(
-      'Here you can setup and run express / fastify / any other framework.'
-    )
+    if (!existingUser) {
+      console.log('Inserting a new user into the database...')
+      const user = new User()
+      user.name = 'Timber'
+      user.email = 'timber@example.com'
+      user.passwordHash = '123456'
+      user.createdAt = new Date()
+      user.updatedAt = new Date()
+      await AppDataSource.manager.save(user)
+      console.log('Saved a new user with id: ' + user.id)
+    } else {
+      console.log('User already exists:', existingUser)
+    }
   })
   .catch((error) => console.log(error))

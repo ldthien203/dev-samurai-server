@@ -16,7 +16,7 @@ export class User {
   email!: string
 
   @Column()
-  passwordHash!: number
+  passwordHash!: string
 
   @Column()
   createdAt!: Date
