@@ -1,6 +1,6 @@
 import { TRequest, TResponse } from '../types/type'
 
-const getResponse = (req: TRequest, res: TResponse) => {
+const getResponse = (_: TRequest, res: TResponse) => {
   res.status(200).json({
     success: true,
     message: 'API response successful',

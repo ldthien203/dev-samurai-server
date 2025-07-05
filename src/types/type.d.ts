@@ -27,5 +27,6 @@ export type TNextFunction = NextFunction
 
 export type TJwtPayload = {
   id: number
+  name: string
   email: string
 }

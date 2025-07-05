@@ -1,4 +1,4 @@
-import { TRequest, TResponse } from '@/types/type'
+import { TRequest, TResponse } from '../types/type'
 import { AppDataSource } from '../data-source'
 import { User } from '../entity/User'
 import { hashPassword, verifyPassword } from '../utils/hashPassword.util'
@@ -83,7 +83,7 @@ const loginUser = async (req: TRequest, res: TResponse) => {
       )
     }
 
-    const payload = { id: user.id, email: user.email }
+    const payload = { id: user.id, name: user.name, email: user.email }
     const accessToken = generateAccessToken(payload, { expiresIn: '15m' })
     const refreshToken = generateRefreshToken(payload, { expiresIn: '7d' })
 

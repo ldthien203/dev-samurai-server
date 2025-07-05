@@ -3,13 +3,13 @@ import { TJwtPayload } from '../types/type'
 import ENV from '../config/env.config'
 
 const generateAccessToken = (user: TJwtPayload, options?: jwt.SignOptions) => {
-  const payload = { id: user.id, email: user.email }
+  const payload = { id: user.id, name: user.name, email: user.email }
   const secret = ENV.ACCESS_TOKEN_SECRET
   return jwt.sign(payload, secret, options)
 }
 
 const generateRefreshToken = (user: TJwtPayload, options?: jwt.SignOptions) => {
-  const payload = { id: user.id, email: user.email }
+  const payload = { id: user.id, name: user.name, email: user.email }
   const secret = ENV.REFRESH_TOKEN_SECRET
   return jwt.sign(payload, secret, options)
 }
