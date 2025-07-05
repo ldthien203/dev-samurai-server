@@ -69,7 +69,7 @@ const loginUser = async (req: TRequest, res: TResponse) => {
       )
     }
 
-    const isMatch = await verifyPassword(password, user.passwordHash)
+    const isMatch = await verifyPassword(user.passwordHash, password)
     if (!isMatch) {
       return errorResponse(
         res,
