@@ -1,27 +1,33 @@
-import jwt, { JwtPayload } from 'jsonwebtoken'
+import jwt from 'jsonwebtoken'
+import { TJwtPayload } from '../types/type'
 import ENV from '../config/env.config'
 
-const generateAccessToken = (
-  userId: { id: number; email: string },
-  options?: jwt.SignOptions
-) => {
-  const payload = { id: userId }
+const generateAccessToken = (user: TJwtPayload, options?: jwt.SignOptions) => {
+  const payload = { id: user.id, email: user.email }
   const secret = ENV.ACCESS_TOKEN_SECRET
   return jwt.sign(payload, secret, options)
 }
 
-const generateRefreshToken = (
-  userId: { id: number; email: string },
-  options?: jwt.SignOptions
-) => {
-  const payload = { id: userId }
+const generateRefreshToken = (user: TJwtPayload, options?: jwt.SignOptions) => {
+  const payload = { id: user.id, email: user.email }
   const secret = ENV.REFRESH_TOKEN_SECRET
   return jwt.sign(payload, secret, options)
 }
 
-const verifyToken = (token: string, secret: string): string | JwtPayload => {
+const verifyToken = (token: string, secret: string): TJwtPayload => {
   try {
-    return jwt.verify(token, secret)
+    const decoded = jwt.verify(token, secret)
+
+    if (
+      typeof decoded === 'string' ||
+      !decoded ||
+      !('id' in decoded) ||
+      !('email' in decoded)
+    ) {
+      throw new Error('Invalid token payload')
+    }
+
+    return decoded as TJwtPayload
   } catch (error) {
     throw new Error('Token verification failed')
   }

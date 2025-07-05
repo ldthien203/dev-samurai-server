@@ -1,6 +1,14 @@
 import { Request, Response, NextFunction } from 'express'
 import { JwtPayload } from 'jsonwebtoken'
 
+declare global {
+  namespace Express {
+    interface Request {
+      user?: string | JwtPayload
+    }
+  }
+}
+
 export type TEnv = {
   NODE_ENV: string
   PORT: number
@@ -17,10 +25,7 @@ export type TRequest = Request
 export type TResponse = Response
 export type TNextFunction = NextFunction
 
-declare global {
-  namespace Express {
-    interface Request {
-      user?: string | JwtPayload
-    }
-  }
+export type TJwtPayload = {
+  id: number
+  email: string
 }

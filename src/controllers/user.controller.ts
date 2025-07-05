@@ -3,7 +3,11 @@ import { AppDataSource } from '../data-source'
 import { User } from '../entity/User'
 import { hashPassword, verifyPassword } from '../utils/hashPassword.util'
 import { successResponse, errorResponse } from '../utils/ApiResponse.util'
-import { generateAccessToken, generateRefreshToken } from '../utils/token.util'
+import {
+  generateAccessToken,
+  generateRefreshToken,
+  verifyToken,
+} from '../utils/token.util'
 import ENV from '../config/env.config'
 
 const registerUser = async (req: TRequest, res: TResponse) => {
@@ -100,4 +104,31 @@ const loginUser = async (req: TRequest, res: TResponse) => {
   }
 }
 
-export { registerUser, loginUser }
+const refreshToken = async (req: TRequest, res: TResponse) => {
+  try {
+    const refreshToken = req.cookies.refreshToken
+
+    if (!refreshToken) {
+      return errorResponse(
+        res,
+        new Error('Refresh token not found'),
+        'Unauthorized',
+        401
+      )
+    }
+
+    const decoded = verifyToken(refreshToken, ENV.REFRESH_TOKEN_SECRET)
+
+    const newAccessToken = generateAccessToken(decoded, { expiresIn: '15m' })
+
+    return successResponse(
+      res,
+      { accessToken: newAccessToken },
+      'Access token refreshed'
+    )
+  } catch (error) {
+    return errorResponse(res, error, 'Failed to refresh access token', 500)
+  }
+}
+
+export { registerUser, loginUser, refreshToken }
