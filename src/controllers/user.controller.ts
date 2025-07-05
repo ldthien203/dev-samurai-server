@@ -1,8 +1,9 @@
 import { Request, Response } from 'express'
 import { AppDataSource } from '../data-source'
 import { User } from '../entity/User'
-import { hashPassword } from '../utils/hashPassword.util'
+import { hashPassword, verifyPassword } from '../utils/hashPassword.util'
 import { successResponse, errorResponse } from '../utils/ApiResponse.util'
+import { generateAccessToken } from '../utils/token.util'
 
 const registerUser = async (req: Request, res: Response) => {
   const { name, email, password } = req.body
@@ -50,6 +51,40 @@ const registerUser = async (req: Request, res: Response) => {
   }
 }
 
-const loginUser = () => {}
+const loginUser = async (req: Request, res: Response) => {
+  const { email, password } = req.body
+
+  try {
+    const user = await AppDataSource.manager.findOneBy(User, {
+      email,
+    })
+
+    if (!user) {
+      return errorResponse(
+        res,
+        new Error('User not found'),
+        'Invalid credentials',
+        401
+      )
+    }
+
+    const isMatch = await verifyPassword(password, user.passwordHash)
+    if (!isMatch) {
+      return errorResponse(
+        res,
+        new Error('Password incorrect'),
+        'Invalid credentials',
+        401
+      )
+    }
+
+    const payload = { id: user.id, email: user.email }
+    const accessToken = generateAccessToken(payload, { expiresIn: '15m' })
+
+    return successResponse(res, accessToken, 'Login successful')
+  } catch (error) {
+    return errorResponse(res, error, 'Login failed')
+  }
+}
 
 export { registerUser, loginUser }
