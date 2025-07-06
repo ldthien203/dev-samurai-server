@@ -28,3 +28,6 @@ export type TJwtPayload = {
   name: string
   email: string
 }
+
+export type TSignUpInput = z.infer<typeof signUpSchema>
+export type TSignInInput = z.infer<typeof signInSchema>
