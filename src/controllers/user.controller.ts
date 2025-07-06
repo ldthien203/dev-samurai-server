@@ -131,4 +131,15 @@ const refreshToken = async (req: TRequest, res: TResponse) => {
   }
 }
 
-export { registerUser, loginUser, refreshToken }
+const logoutUser = async (_: TRequest, res: TResponse) => {
+  res.clearCookie('refreshToken', {
+    httpOnly: true,
+    secure: ENV.NODE_ENV === 'production',
+    sameSite: 'strict',
+    maxAge: 0,
+  })
+
+  return successResponse(res, null, 'Successfully logged out')
+}
+
+export { registerUser, loginUser, refreshToken, logoutUser }
