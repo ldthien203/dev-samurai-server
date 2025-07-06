@@ -11,7 +11,6 @@ const getResponse = (req: Request, res: Response) => {
       success: true,
       message: 'API response successful',
       data: {
-        id: req.user.id,
         name: req.user.name,
         email: req.user.email,
       },
