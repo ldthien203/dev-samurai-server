@@ -10,10 +10,10 @@ import authMiddleware from '../middlewares/auth.middleware'
 
 const router = express.Router()
 
-router.post('/sign-up', registerUser)
-router.post('/sign-in', loginUser)
-router.post('/refresh-token', refreshToken)
-router.post('/logout', logoutUser)
+router.post('/auth/sign-up', registerUser)
+router.post('/auth/sign-in', loginUser)
+router.post('/auth/refresh-token', refreshToken)
+router.post('/auth/logout', logoutUser)
 router.get('/me', authMiddleware, getResponse)
 
 export default router

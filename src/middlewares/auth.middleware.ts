@@ -1,9 +1,9 @@
 import { errorResponse } from '../utils/ApiResponse.util'
 import { verifyToken } from '../utils/token.util'
 import ENV from '../config/env.config'
-import { TRequest, TResponse, TNextFunction } from '../types/type'
+import { Request, Response, NextFunction } from 'express'
 
-const authMiddleware = (req: TRequest, res: TResponse, next: TNextFunction) => {
+const authMiddleware = (req: Request, res: Response, next: NextFunction) => {
   const token = req.header('Authorization')?.replace('Bearer ', '')
 
   if (!token) {

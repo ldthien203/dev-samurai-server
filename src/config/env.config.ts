@@ -13,6 +13,8 @@ const ENV: TEnv = {
   DATABASE_PORT: Number(process.env.DATABASE_PORT) || 5432,
   ACCESS_TOKEN_SECRET: process.env.ACCESS_TOKEN_SECRET || '',
   REFRESH_TOKEN_SECRET: process.env.REFRESH_TOKEN_SECRET || '',
+  CLIENT_DEV_DOMAIN: process.env.CLIENT_DEV_DOMAIN || '',
+  CLIENT_PRODUCT_DOMAIN: process.env.CLIENT_PRODUCT_DOMAIN || '',
 }
 
 export default ENV

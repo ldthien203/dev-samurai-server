@@ -1,4 +1,4 @@
-import { TRequest, TResponse } from '../types/type'
+import { Request, Response } from 'express'
 import { AppDataSource } from '../data-source'
 import { User } from '../entity/User'
 import { hashPassword, verifyPassword } from '../utils/hashPassword.util'
@@ -10,7 +10,7 @@ import {
 } from '../utils/token.util'
 import ENV from '../config/env.config'
 
-const registerUser = async (req: TRequest, res: TResponse) => {
+const registerUser = async (req: Request, res: Response) => {
   const { name, email, password } = req.body
 
   if (!name || !email || !password) {
@@ -56,7 +56,7 @@ const registerUser = async (req: TRequest, res: TResponse) => {
   }
 }
 
-const loginUser = async (req: TRequest, res: TResponse) => {
+const loginUser = async (req: Request, res: Response) => {
   const { email, password } = req.body
 
   try {
@@ -104,7 +104,7 @@ const loginUser = async (req: TRequest, res: TResponse) => {
   }
 }
 
-const refreshToken = async (req: TRequest, res: TResponse) => {
+const refreshToken = async (req: Request, res: Response) => {
   try {
     const refreshToken = req.cookies.refreshToken
 
@@ -131,7 +131,7 @@ const refreshToken = async (req: TRequest, res: TResponse) => {
   }
 }
 
-const logoutUser = async (_: TRequest, res: TResponse) => {
+const logoutUser = async (_: Request, res: Response) => {
   res.clearCookie('refreshToken', {
     httpOnly: true,
     secure: ENV.NODE_ENV === 'production',

@@ -4,7 +4,7 @@ import { JwtPayload } from 'jsonwebtoken'
 declare global {
   namespace Express {
     interface Request {
-      user?: string | JwtPayload
+      user?: TJwtPayload
     }
   }
 }
@@ -19,11 +19,9 @@ export type TEnv = {
   DATABASE_PORT: number
   ACCESS_TOKEN_SECRET: string
   REFRESH_TOKEN_SECRET: string
+  CLIENT_DEV_DOMAIN: string
+  CLIENT_PRODUCT_DOMAIN: string
 }
-
-export type TRequest = Request
-export type TResponse = Response
-export type TNextFunction = NextFunction
 
 export type TJwtPayload = {
   id: number
