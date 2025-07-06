@@ -1,6 +1,7 @@
 import { DataSource } from 'typeorm'
 import { User } from './entity/User'
 import ENV from './config/env.config'
+import { hashPassword } from './utils/bcrypt'
 
 export const AppDataSource = new DataSource({
   type: 'postgres',
@@ -19,15 +20,17 @@ export const AppDataSource = new DataSource({
 AppDataSource.initialize()
   .then(async () => {
     const existingUser = await AppDataSource.manager.findOneBy(User, {
-      email: 'timber@example.com',
+      email: 'test@example.com',
     })
+
+    const hashedPassword = await hashPassword('123456')
 
     if (!existingUser) {
       console.log('Inserting a new user into the database...')
       const user = new User()
-      user.name = 'Timber'
-      user.email = 'timber@example.com'
-      user.passwordHash = '123456'
+      user.name = 'test'
+      user.email = 'test@example.com'
+      user.passwordHash = hashedPassword
       user.createdAt = new Date()
       user.updatedAt = new Date()
       await AppDataSource.manager.save(user)
