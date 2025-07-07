@@ -7,9 +7,9 @@ import corsMiddleware from '@/middlewares/cors.middleware'
 
 const app = express()
 
+app.use(corsMiddleware)
 app.use(express.json())
 app.use(express.urlencoded({ extended: true }))
-app.use(corsMiddleware)
 app.use(express.static('public'))
 app.use(cookieParser())
 

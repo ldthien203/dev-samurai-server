@@ -85,4 +85,13 @@ describe('Auth routes', () => {
     expect(response.status).toBe(401)
     expect(response.body.message).toBe('Unauthorized')
   })
+
+  it('should logout and invalidate refresh token', async () => {
+    const response = await request(app)
+      .post('/api/auth/logout')
+      .set('Cookie', `refreshToken=${refreshToken}`)
+
+    expect(response.status).toBe(200)
+    expect(response.body.message).toBe('Successfully logged out')
+  })
 })
