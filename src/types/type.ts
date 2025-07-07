@@ -1,5 +1,5 @@
-import { Request, Response, NextFunction } from 'express'
-import { JwtPayload } from 'jsonwebtoken'
+import { signInSchema, signUpSchema } from '@/schemas/auth.schema'
+import { z } from 'zod'
 
 declare global {
   namespace Express {

@@ -13,20 +13,22 @@ export class User {
 
   @Column({
     length: 100,
+    type: 'varchar',
   })
   name!: string
 
   @Column({
     length: 100,
+    type: 'varchar',
   })
   email!: string
 
-  @Column()
+  @Column({ type: 'varchar' })
   passwordHash!: string
 
-  @CreateDateColumn()
+  @CreateDateColumn({ type: 'date' })
   createdAt!: Date
 
-  @UpdateDateColumn()
+  @UpdateDateColumn({ type: 'date' })
   updatedAt!: Date
 }

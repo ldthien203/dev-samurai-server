@@ -1,6 +1,6 @@
+import 'reflect-metadata'
 import app from './app'
-import { AppDataSource } from '@/data-source'
-
+import { AppDataSource } from './data-source'
 import ENV from './config/env.config'
 
 const startServer = async () => {
