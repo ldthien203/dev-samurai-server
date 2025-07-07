@@ -1,6 +1,6 @@
-import { errorResponse } from '../utils/ApiResponse.util'
-import { verifyToken } from '../utils/token.util'
-import ENV from '../config/env.config'
+import { errorResponse } from '@/utils/ApiResponse.util'
+import { verifyToken } from '@/utils/token.util'
+import ENV from '@/config/env.config'
 import { Request, Response, NextFunction } from 'express'
 
 const authMiddleware = (req: Request, res: Response, next: NextFunction) => {

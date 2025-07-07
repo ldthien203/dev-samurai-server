@@ -4,7 +4,7 @@ import {
   loginUser,
   refreshToken,
   logoutUser,
-} from '../controllers/auth.controller'
+} from '@/controllers/auth.controller'
 import validate from '@/middlewares/validate.middleware'
 import { signUpSchema, signInSchema } from '@/schemas/auth.schema'
 

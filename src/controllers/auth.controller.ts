@@ -1,14 +1,14 @@
 import { Request, Response } from 'express'
-import { AppDataSource } from '../data-source'
-import { User } from '../entity/User'
-import { hashPassword, verifyPassword } from '../utils/bcrypt'
-import { successResponse, errorResponse } from '../utils/ApiResponse.util'
+import { AppDataSource } from '@/data-source'
+import { User } from '@/entity/User'
+import { hashPassword, verifyPassword } from '@/utils/bcrypt'
+import { successResponse, errorResponse } from '@/utils/ApiResponse.util'
 import {
   generateAccessToken,
   generateRefreshToken,
   verifyToken,
-} from '../utils/token.util'
-import ENV from '../config/env.config'
+} from '@/utils/token.util'
+import ENV from '@/config/env.config'
 
 const registerUser = async (req: Request, res: Response) => {
   const { name, email, password } = req.body

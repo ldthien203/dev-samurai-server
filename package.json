@@ -2,9 +2,15 @@
   "name": "dev-samurai-server",
   "version": "1.0.0",
   "main": "./src/index",
+  "_moduleAliases": {
+    "@root": ".",
+    "@src": "dist/src",
+    "@config": "dist/src/config",
+    "@utils": "dist/src/utils"
+  },
   "type": "commonjs",
   "scripts": {
-    "dev": "nodemon --exec ts-node src/index.ts",
+    "dev": "nodemon --exec ts-node --require tsconfig-paths/register src/index.ts",
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "ts-node src/index.ts",
     "typeorm": "typeorm-ts-node-commonjs"
@@ -22,6 +28,7 @@
     "dotenv": "^17.0.1",
     "express": "^5.1.0",
     "jsonwebtoken": "^9.0.2",
+    "module-alias": "^2.2.3",
     "multer": "^2.0.1",
     "pg": "^8.14.1",
     "reflect-metadata": "^0.2.2",
@@ -35,8 +42,10 @@
     "@types/cors": "^2.8.19",
     "@types/express": "^5.0.3",
     "@types/jsonwebtoken": "^9.0.10",
+    "@types/module-alias": "^2.0.4",
     "@types/node": "^24.0.10",
     "@types/pg": "^8.15.4",
+    "@types/supertest": "^6.0.3",
     "@typescript-eslint/parser": "^8.35.1",
     "eslint": "^9.30.1",
     "eslint-config-prettier": "^10.1.5",
@@ -44,10 +53,12 @@
     "globals": "^16.3.0",
     "nodemon": "^3.1.10",
     "prettier": "^3.6.2",
+    "supertest": "^7.1.1",
     "ts-node": "^10.9.2",
     "tsconfig-paths": "^4.2.0",
     "tsx": "^4.20.3",
     "typescript": "^5.8.3",
-    "typescript-eslint": "^8.35.1"
+    "typescript-eslint": "^8.35.1",
+    "vitest": "^3.2.4"
   }
 }

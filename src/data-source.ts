@@ -1,7 +1,7 @@
 import { DataSource } from 'typeorm'
-import { User } from './entity/User'
-import ENV from './config/env.config'
-import { hashPassword } from './utils/bcrypt'
+import { User } from '@/entity/User'
+import ENV from '@/config/env.config'
+import { hashPassword } from '@/utils/bcrypt'
 
 export const AppDataSource = new DataSource({
   type: 'postgres',

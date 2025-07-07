@@ -1,5 +1,5 @@
 import cors from 'cors'
-import ENV from '../config/env.config'
+import ENV from '@/config/env.config'
 
 const allowedOrigins: string[] = [
   ENV.CLIENT_DEV_DOMAIN,

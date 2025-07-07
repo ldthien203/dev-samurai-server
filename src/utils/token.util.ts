@@ -1,6 +1,6 @@
 import jwt from 'jsonwebtoken'
-import { TJwtPayload } from '../types/type'
-import ENV from '../config/env.config'
+import { TJwtPayload } from '@/types/type'
+import ENV from '@/config/env.config'
 
 const generateAccessToken = (user: TJwtPayload, options?: jwt.SignOptions) => {
   const payload = { id: user.id, name: user.name, email: user.email }

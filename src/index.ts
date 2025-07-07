@@ -1,10 +1,10 @@
 import 'reflect-metadata'
 import express from 'express'
-import { AppDataSource } from './data-source'
+import { AppDataSource } from '@/data-source'
 import cookieParser from 'cookie-parser'
-import authRoutes from './routes/auth.routes'
-import userRoutes from './routes/user.routes'
-import corsMiddleware from './middlewares/cors.middleware'
+import authRoutes from '@/routes/auth.routes'
+import userRoutes from '@/routes/user.routes'
+import corsMiddleware from '@/middlewares/cors.middleware'
 
 const app = express()
 const PORT = 4000
