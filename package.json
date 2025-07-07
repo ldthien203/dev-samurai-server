@@ -10,7 +10,7 @@
   },
   "type": "commonjs",
   "scripts": {
-    "build": "tsc",
+    "build": "rm -rf ./dist && tsc -p tsconfig.json",
     "dev": "nodemon --exec ts-node --require tsconfig-paths/register src/index.ts",
     "test": "vitest",
     "start": "node dist/index.js",

@@ -7,6 +7,7 @@ import {
   verifyToken,
 } from '@/utils/token.util'
 import ENV from '@/config/env.config'
+import { ErrorMessage } from '@/constants/constant'
 
 const registerUserService = async (
   name: string,
@@ -15,7 +16,7 @@ const registerUserService = async (
 ) => {
   const existingUser = await AppDataSource.manager.findOneBy(User, { email })
 
-  if (existingUser) throw new Error('User already exists')
+  if (existingUser) throw new Error(ErrorMessage.USER_ALREADY_EXIST)
 
   const hashedPassword = await hashPassword(password)
 
@@ -34,16 +35,20 @@ const loginUserService = async (email: string, password: string) => {
     email,
   })
 
-  if (!user) throw new Error('User not found')
+  if (!user) throw new Error(ErrorMessage.USER_NOT_FOUND)
 
   const isMatch = await verifyPassword(user.passwordHash, password)
 
-  if (!isMatch) throw new Error('Password incorrect')
+  if (!isMatch) throw new Error(ErrorMessage.PASSWORD_INCORRECT)
 
   const payload = { id: user.id, name: user.name, email: user.email }
 
-  const accessToken = generateAccessToken(payload, { expiresIn: '15m' })
-  const refreshToken = generateRefreshToken(payload, { expiresIn: '7d' })
+  const accessToken = generateAccessToken(payload, {
+    expiresIn: ENV.ACCESS_TOKEN_EXPIRE_TIME,
+  })
+  const refreshToken = generateRefreshToken(payload, {
+    expiresIn: ENV.REFRESH_TOKEN_EXPIRE_TIME,
+  })
 
   return { accessToken, refreshToken }
 }
@@ -51,7 +56,9 @@ const loginUserService = async (email: string, password: string) => {
 const refreshTokenService = (refreshToken: string) => {
   const decoded = verifyToken(refreshToken, ENV.REFRESH_TOKEN_SECRET)
 
-  const newAccessToken = generateAccessToken(decoded, { expiresIn: '15m' })
+  const newAccessToken = generateAccessToken(decoded, {
+    expiresIn: ENV.ACCESS_TOKEN_EXPIRE_TIME,
+  })
 
   return newAccessToken
 }

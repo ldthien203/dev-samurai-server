@@ -1,6 +1,7 @@
 import jwt from 'jsonwebtoken'
 import { TJwtPayload } from '@/types/type'
 import ENV from '@/config/env.config'
+import { ErrorMessage } from '@/constants/constant'
 
 const generateAccessToken = (user: TJwtPayload, options?: jwt.SignOptions) => {
   const payload = { id: user.id, name: user.name, email: user.email }
@@ -24,12 +25,12 @@ const verifyToken = (token: string, secret: string): TJwtPayload => {
       !('id' in decoded) ||
       !('email' in decoded)
     ) {
-      throw new Error('Invalid token payload')
+      throw new Error(ErrorMessage.INVALID_TOKEN_PAYLOAD)
     }
 
     return decoded as TJwtPayload
   } catch (error) {
-    throw new Error('Token verification failed')
+    throw new Error(ErrorMessage.TOKEN_VERIFICATION_FAILED)
   }
 }
 

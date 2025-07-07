@@ -1,30 +1,26 @@
 import { Request, Response } from 'express'
 import { successResponse, errorResponse } from '@/utils/ApiResponse.util'
-
 import ENV from '@/config/env.config'
 import {
   loginUserService,
   refreshTokenService,
   registerUserService,
 } from '@/services/auth.service'
+import { MessageResponse, NODE_ENV, StatusCode } from '@/constants/constant'
 
 const registerUser = async (req: Request, res: Response) => {
   const { name, email, password } = req.body
 
-  if (!name || !email || !password) {
-    return errorResponse(
-      res,
-      new Error('Missing required fields'),
-      'Please provide all required fields',
-      400
-    )
-  }
-
   try {
     const data = await registerUserService(name, email, password)
-    return successResponse(res, data, 'User registered successfully', 201)
+    return successResponse(
+      res,
+      data,
+      MessageResponse.REGISTER_SUCCESS,
+      StatusCode.CREATED
+    )
   } catch (error) {
-    return errorResponse(res, error, 'Registration failed')
+    return errorResponse(res, error, MessageResponse.REGISTER_FAILED)
   }
 }
 
@@ -39,7 +35,7 @@ const loginUser = async (req: Request, res: Response) => {
 
     res.cookie('refreshToken', refreshToken, {
       httpOnly: true,
-      secure: ENV.NODE_ENV === 'production',
+      secure: ENV.NODE_ENV === NODE_ENV.PRODUCTION,
       sameSite: 'strict',
       maxAge: 7 * 24 * 60 * 60 * 1000,
     })
@@ -47,10 +43,10 @@ const loginUser = async (req: Request, res: Response) => {
     return successResponse(
       res,
       { accessToken, refreshToken },
-      'Login successful'
+      MessageResponse.LOGIN_SUCCESS
     )
   } catch (error) {
-    return errorResponse(res, error, 'Login failed')
+    return errorResponse(res, error, MessageResponse.LOGIN_FAILED)
   }
 }
 
@@ -61,27 +57,36 @@ const refreshToken = async (req: Request, res: Response) => {
     if (!refreshToken) {
       return errorResponse(
         res,
-        new Error('Refresh token not found'),
-        'Unauthorized',
-        401
+        new Error(MessageResponse.REFRESH_TOKEN_NOT_FOUND),
+        MessageResponse.UNAUTHORIZED,
+        StatusCode.UNAUTHORIZED
       )
     }
     const accessToken = refreshTokenService(refreshToken)
-    return successResponse(res, { accessToken }, 'Access token refreshed')
+    return successResponse(
+      res,
+      { accessToken },
+      MessageResponse.REFRESH_SUCCESS
+    )
   } catch (error) {
-    return errorResponse(res, error, 'Failed to refresh access token', 500)
+    return errorResponse(
+      res,
+      error,
+      MessageResponse.REFRESH_FAILED,
+      StatusCode.INTERNAL_SERVER_ERROR
+    )
   }
 }
 
 const logoutUser = async (_: Request, res: Response) => {
   res.clearCookie('refreshToken', {
     httpOnly: true,
-    secure: ENV.NODE_ENV === 'production',
+    secure: ENV.NODE_ENV === NODE_ENV.PRODUCTION,
     sameSite: 'strict',
     maxAge: 0,
   })
 
-  return successResponse(res, null, 'Successfully logged out')
+  return successResponse(res, null, MessageResponse.LOGOUT_SUCCESS)
 }
 
 export { registerUser, loginUser, refreshToken, logoutUser }

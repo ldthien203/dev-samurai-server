@@ -1,15 +1,21 @@
 import { Request, Response } from 'express'
 import { successResponse, errorResponse } from '@/utils/ApiResponse.util'
+import { ErrorMessage, MessageResponse, StatusCode } from '@/constants/constant'
 
 const getResponse = (req: Request, res: Response) => {
   if (!req.user) {
-    return errorResponse(res, new Error('User not found'), 'Unauthorized', 401)
+    return errorResponse(
+      res,
+      new Error(ErrorMessage.USER_NOT_FOUND),
+      MessageResponse.UNAUTHORIZED,
+      StatusCode.UNAUTHORIZED
+    )
   } else {
     return successResponse(
       res,
       { name: req.user.name, email: req.user.email },
-      'API response successful',
-      200
+      MessageResponse.API_SUCCESS,
+      StatusCode.OK
     )
   }
 }

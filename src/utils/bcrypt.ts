@@ -1,11 +1,11 @@
+import { ErrorMessage } from '@/constants/constant'
 import bcrypt from 'bcrypt'
 
 const hashPassword = async (password: string): Promise<string> => {
   try {
-    const hashedPassword = await bcrypt.hash(password, 10)
-    return hashedPassword
+    return bcrypt.hash(password, 10)
   } catch (error) {
-    throw new Error('Error hashing password' + error)
+    throw new Error(ErrorMessage.ERROR_HASHING_MESSAGE + error)
   }
 }
 
@@ -14,10 +14,9 @@ const verifyPassword = async (
   plainPassword: string
 ): Promise<boolean> => {
   try {
-    const isMatch = await bcrypt.compare(plainPassword, hashedPassword)
-    return isMatch
+    return bcrypt.compare(plainPassword, hashedPassword)
   } catch (error) {
-    throw new Error('Error verifying password' + error)
+    throw new Error(ErrorMessage.ERROR_VERIFICATION_MESSAGE + error)
   }
 }
 

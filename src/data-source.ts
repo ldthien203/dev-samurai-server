@@ -23,7 +23,7 @@ AppDataSource.initialize()
       email: 'test@example.com',
     })
 
-    const hashedPassword = await hashPassword('123456')
+    const hashedPassword = await hashPassword('1234qweR')
 
     if (!existingUser) {
       console.log('Inserting a new user into the database...')
@@ -37,6 +37,7 @@ AppDataSource.initialize()
       console.log('Saved a new user with id: ' + user.id)
     } else {
       console.log('User already exists:', existingUser)
+      console.log('You can login with password: 1234qweR')
     }
   })
   .catch((error) => console.log(error))

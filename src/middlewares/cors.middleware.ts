@@ -1,5 +1,6 @@
 import cors from 'cors'
 import ENV from '@/config/env.config'
+import { ErrorMessage } from '@/constants/constant'
 
 const allowedOrigins: string[] = [
   ENV.CLIENT_DEV_DOMAIN,
@@ -13,7 +14,7 @@ const originFunction = (
   if (allowedOrigins.indexOf(origin as string) !== -1 || !origin) {
     callback(null, true)
   } else {
-    callback(new Error('Not allowed by CORS'), false)
+    callback(new Error(ErrorMessage.NOT_ALLOWED_BY_CORS), false)
   }
 }
 
