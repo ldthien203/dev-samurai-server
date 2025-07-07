@@ -1,14 +1,12 @@
 import { Request, Response } from 'express'
-import { AppDataSource } from '@/data-source'
-import { User } from '@/entity/User'
-import { hashPassword, verifyPassword } from '@/utils/bcrypt'
 import { successResponse, errorResponse } from '@/utils/ApiResponse.util'
-import {
-  generateAccessToken,
-  generateRefreshToken,
-  verifyToken,
-} from '@/utils/token.util'
+
 import ENV from '@/config/env.config'
+import {
+  loginUserService,
+  refreshTokenService,
+  registerUserService,
+} from '@/services/auth.service'
 
 const registerUser = async (req: Request, res: Response) => {
   const { name, email, password } = req.body
@@ -23,34 +21,8 @@ const registerUser = async (req: Request, res: Response) => {
   }
 
   try {
-    const existingUser = await AppDataSource.manager.findOneBy(User, {
-      email: email,
-    })
-
-    if (existingUser) {
-      return errorResponse(
-        res,
-        new Error('User already exists'),
-        'Email is already registered',
-        409
-      )
-    }
-
-    const hashedPassword = await hashPassword(password)
-
-    const user = new User()
-    user.name = name
-    user.email = email
-    user.passwordHash = hashedPassword
-
-    await AppDataSource.manager.save(user)
-
-    return successResponse(
-      res,
-      { name, email },
-      'User registered successfully',
-      201
-    )
+    const data = await registerUserService(name, email, password)
+    return successResponse(res, data, 'User registered successfully', 201)
   } catch (error) {
     return errorResponse(res, error, 'Registration failed')
   }
@@ -60,32 +32,10 @@ const loginUser = async (req: Request, res: Response) => {
   const { email, password } = req.body
 
   try {
-    const user = await AppDataSource.manager.findOneBy(User, {
+    const { accessToken, refreshToken } = await loginUserService(
       email,
-    })
-
-    if (!user) {
-      return errorResponse(
-        res,
-        new Error('User not found'),
-        'Invalid credentials',
-        401
-      )
-    }
-
-    const isMatch = await verifyPassword(user.passwordHash, password)
-    if (!isMatch) {
-      return errorResponse(
-        res,
-        new Error('Password incorrect'),
-        'Invalid credentials',
-        401
-      )
-    }
-
-    const payload = { id: user.id, name: user.name, email: user.email }
-    const accessToken = generateAccessToken(payload, { expiresIn: '15m' })
-    const refreshToken = generateRefreshToken(payload, { expiresIn: '7d' })
+      password
+    )
 
     res.cookie('refreshToken', refreshToken, {
       httpOnly: true,
@@ -116,16 +66,8 @@ const refreshToken = async (req: Request, res: Response) => {
         401
       )
     }
-
-    const decoded = verifyToken(refreshToken, ENV.REFRESH_TOKEN_SECRET)
-
-    const newAccessToken = generateAccessToken(decoded, { expiresIn: '15m' })
-
-    return successResponse(
-      res,
-      { accessToken: newAccessToken },
-      'Access token refreshed'
-    )
+    const accessToken = refreshTokenService(refreshToken)
+    return successResponse(res, { accessToken }, 'Access token refreshed')
   } catch (error) {
     return errorResponse(res, error, 'Failed to refresh access token', 500)
   }
