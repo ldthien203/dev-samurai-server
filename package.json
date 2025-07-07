@@ -11,7 +11,7 @@
   "type": "commonjs",
   "scripts": {
     "dev": "nodemon --exec ts-node --require tsconfig-paths/register src/index.ts",
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "vitest",
     "start": "ts-node src/index.ts",
     "typeorm": "typeorm-ts-node-commonjs"
   },
@@ -59,6 +59,7 @@
     "tsx": "^4.20.3",
     "typescript": "^5.8.3",
     "typescript-eslint": "^8.35.1",
+    "unplugin-swc": "^1.5.5",
     "vitest": "^3.2.4"
   }
 }

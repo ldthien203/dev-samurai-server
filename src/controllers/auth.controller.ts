@@ -49,7 +49,7 @@ const registerUser = async (req: Request, res: Response) => {
       res,
       { name, email },
       'User registered successfully',
-      200
+      201
     )
   } catch (error) {
     return errorResponse(res, error, 'Registration failed')
