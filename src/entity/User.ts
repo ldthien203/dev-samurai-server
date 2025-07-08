@@ -20,15 +20,16 @@ export class User {
   @Column({
     length: 100,
     type: 'varchar',
+    unique: true,
   })
   email!: string
 
   @Column({ type: 'varchar' })
   passwordHash!: string
 
-  @CreateDateColumn({ type: 'date' })
+  @CreateDateColumn({ type: 'timestamp' })
   createdAt!: Date
 
-  @UpdateDateColumn({ type: 'date' })
+  @UpdateDateColumn({ type: 'timestamp' })
   updatedAt!: Date
 }
