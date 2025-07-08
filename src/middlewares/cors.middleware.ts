@@ -11,7 +11,7 @@ const originFunction = (
   origin: string | undefined,
   callback: (err: Error | null, allowed?: boolean) => void
 ) => {
-  if (allowedOrigins.indexOf(origin as string) !== -1 || !origin) {
+  if (!origin || allowedOrigins.includes(origin)) {
     callback(null, true)
   } else {
     callback(new Error(ErrorMessage.NOT_ALLOWED_BY_CORS), false)

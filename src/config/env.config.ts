@@ -17,8 +17,10 @@ const ENV: TEnv = {
   REFRESH_TOKEN_SECRET: process.env.REFRESH_TOKEN_SECRET || '',
   REFRESH_TOKEN_EXPIRE_TIME:
     Number(process.env.REFRESH_TOKEN_EXPIRE_TIME) || 7 * 24 * 60 * 60 * 1000,
-  CLIENT_DEV_DOMAIN: process.env.CLIENT_DEV_DOMAIN || '',
-  CLIENT_PRODUCT_DOMAIN: process.env.CLIENT_PRODUCT_DOMAIN || '',
+  CLIENT_DEV_DOMAIN: process.env.CLIENT_DEV_DOMAIN || 'http://localhost:5173',
+  CLIENT_PRODUCT_DOMAIN:
+    process.env.CLIENT_PRODUCT_DOMAIN ||
+    'https://dev-samurai-client-deploy.vercel.app',
 }
 
 export default ENV
