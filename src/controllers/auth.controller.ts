@@ -20,7 +20,12 @@ const registerUser = async (req: Request, res: Response) => {
       StatusCode.CREATED
     )
   } catch (error) {
-    return errorResponse(res, error, MessageResponse.REGISTER_FAILED)
+    return errorResponse(
+      res,
+      error,
+      MessageResponse.REGISTER_FAILED,
+      StatusCode.BAD_REQUEST
+    )
   }
 }
 
@@ -46,7 +51,12 @@ const loginUser = async (req: Request, res: Response) => {
       MessageResponse.LOGIN_SUCCESS
     )
   } catch (error) {
-    return errorResponse(res, error, MessageResponse.LOGIN_FAILED)
+    return errorResponse(
+      res,
+      error,
+      MessageResponse.LOGIN_FAILED,
+      StatusCode.UNAUTHORIZED
+    )
   }
 }
 

@@ -28,7 +28,7 @@ export const MessageResponse = {
   REGISTER_SUCCESS: 'User registered successfully',
   REGISTER_FAILED: 'Registration failed',
   LOGIN_SUCCESS: 'Login successful',
-  LOGIN_FAILED: 'Login failed',
+  LOGIN_FAILED: 'Invalid credentials. Please check your email and password.',
   LOGOUT_SUCCESS: 'Successfully logged out',
   REFRESH_SUCCESS: 'Access token refreshed',
   REFRESH_FAILED: 'Failed to refresh access token',
